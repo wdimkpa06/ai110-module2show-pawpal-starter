@@ -70,6 +70,42 @@ Sample test output:
 # Paste your pytest output here
 ```
 
+All tasks (sorted by time)
+--------------------------
+  08:00 | Biscuit    | Morning walk         |  30 min | high   | pending
+  08:00 | Whiskers   | Feeding              |  10 min | high   | pending
+  10:00 | Biscuit    | Vet checkup          |  45 min | high   | pending
+  12:00 | Whiskers   | Litter box cleaning  |  10 min | low    | pending
+  18:00 | Biscuit    | Evening walk         |  30 min | medium | pending
+
+All tasks (sorted by priority)
+------------------------------
+  08:00 | Biscuit    | Morning walk         |  30 min | high   | pending
+  10:00 | Biscuit    | Vet checkup          |  45 min | high   | pending
+  08:00 | Whiskers   | Feeding              |  10 min | high   | pending
+  18:00 | Biscuit    | Evening walk         |  30 min | medium | pending
+  12:00 | Whiskers   | Litter box cleaning  |  10 min | low    | pending
+
+Today's Plan
+------------
+
+Selected for today's plan
+-------------------------
+  08:00 | Biscuit    | Morning walk         |  30 min | high   | pending
+  08:00 | Whiskers   | Feeding              |  10 min | high   | pending
+  10:00 | Biscuit    | Vet checkup          |  45 min | high   | pending
+
+Plan Explanation
+----------------
+Included 3 of 5 tasks (85/90 minutes used), prioritizing high-priority tasks first.
+Skipped due to time budget or lower priority:
+  - Evening walk (Biscuit, medium priority, 30 min)
+  - Litter box cleaning (Whiskers, low priority, 10 min)
+
+Conflict Check
+--------------
+  WARNING: Conflict at 08:00: 'Morning walk' (Biscuit) overlaps with 'Feeding' (Whiskers)
+
 ## 📐 Smarter Scheduling
 
 > Fill in once you've implemented scheduling logic.
