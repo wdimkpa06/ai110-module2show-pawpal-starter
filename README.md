@@ -46,30 +46,6 @@ pip install -r requirements.txt
 
 Paste a sample of your app's CLI or Streamlit output here so a reader can see what a generated plan looks like:
 
-```
-# e.g.:
-# Daily plan for Biscuit (Golden Retriever):
-#   08:00 — Morning walk (30 min) [priority: high]
-#   09:00 — Feeding (10 min) [priority: high]
-#   ...
-```
-
-## 🧪 Testing PawPal+
-
-```bash
-# Run the full test suite:
-pytest
-
-# Run with coverage:
-pytest --cov
-```
-
-Sample test output:
-
-```
-# Paste your pytest output here
-```
-
 All tasks (sorted by time)
 --------------------------
   08:00 | Biscuit    | Morning walk         |  30 min | high   | pending
@@ -105,6 +81,31 @@ Skipped due to time budget or lower priority:
 Conflict Check
 --------------
   WARNING: Conflict at 08:00: 'Morning walk' (Biscuit) overlaps with 'Feeding' (Whiskers)
+
+## 🧪 Testing PawPal+
+
+```bash
+# Run the full test suite:
+pytest
+
+# Run with coverage:
+pytest --cov
+```
+
+Sample test output:
+
+```
+# Paste your pytest output here
+```
+============================================================================== test session starts ==============================================================================
+platform win32 -- Python 3.13.14, pytest-9.0.3, pluggy-1.6.0
+rootdir: C:\Users\omadi\Documents\ai110-module2show-pawpal-starter
+plugins: anyio-4.14.0, dash-4.1.0, timeout-2.4.0
+collected 5 items                                                                                                                                                                
+
+tests\test_pawpal.py .....                                                                                                                                                 [100%]
+
+=============================================================================== 5 passed in 0.09s ===============================================================================
 
 ## 📐 Smarter Scheduling
 
