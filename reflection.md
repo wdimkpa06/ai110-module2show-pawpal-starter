@@ -14,6 +14,8 @@ My initial design uses four classes: Owner (holds the pet owner's name and their
 - Did your design change during implementation?
 - If yes, describe at least one change and why you made it.
 
+After an AI review of my initial skeleton, I added a time field and a pet_name field to the Task class. Originally, Task only tracked duration, which made it impossible to detect scheduling conflicts (two tasks at the same time) or calculate the next occurrence of a recurring task. Adding pet_name also lets a flattened list of tasks (returned by Scheduler.get_all_tasks()) still identify which pet each task belongs to, which matters for readable output.
+
 ---
 
 ## 2. Scheduling Logic and Tradeoffs
