@@ -114,11 +114,11 @@ Sample test output:
 platform win32 -- Python 3.13.14, pytest-9.0.3, pluggy-1.6.0
 rootdir: C:\Users\omadi\Documents\ai110-module2show-pawpal-starter
 plugins: anyio-4.14.0, dash-4.1.0, timeout-2.4.0
-collected 5 items                                                                                                                                                                
+collected 9 items                                                                                                                                                                
 
-tests\test_pawpal.py .....                                                                                                                                                 [100%]
+tests\test_pawpal.py .........                                                                                                                                             [100%]
 
-=============================================================================== 5 passed in 0.09s ===============================================================================
+=============================================================================== 9 passed in 0.13s ===============================================================================
 
 ## 📐 Smarter Scheduling
 

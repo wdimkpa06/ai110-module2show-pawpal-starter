@@ -73,3 +73,84 @@ def test_pet_with_no_tasks_has_empty_list():
     """A pet with no tasks should return an empty list, not an error."""
     pet = Pet(name="Whiskers", species="Cat")
     assert pet.get_tasks() == []
+
+def test_recurring_task_creates_next_occurrence():
+    """Completing a daily task should automatically create its next occurrence."""
+    owner = Owner(name="Alex")
+    pet = Pet(name="Biscuit", species="Dog")
+    owner.add_pet(pet)
+
+    task = Task(
+        description="Morning walk", duration_minutes=30,
+        priority="high", time="08:00", frequency="daily"
+    )
+    pet.add_task(task)
+
+    scheduler = Scheduler(owner)
+    next_task = scheduler.complete_task(task)
+
+    assert task.is_complete is True
+    assert next_task is not None
+    assert next_task.is_complete is False
+    assert next_task.description == "Morning walk"
+    assert len(pet.get_tasks()) == 2
+
+
+def test_one_time_task_does_not_recur():
+    """Completing a one-time (non-recurring) task should not create a new task."""
+    owner = Owner(name="Alex")
+    pet = Pet(name="Biscuit", species="Dog")
+    owner.add_pet(pet)
+
+    task = Task(
+        description="Vet checkup", duration_minutes=45,
+        priority="high", time="10:00", frequency="once"
+    )
+    pet.add_task(task)
+
+    scheduler = Scheduler(owner)
+    next_task = scheduler.complete_task(task)
+
+    assert task.is_complete is True
+    assert next_task is None
+    assert len(pet.get_tasks()) == 1
+
+
+def test_generate_plan_respects_time_budget():
+    """generate_plan() should never schedule more minutes than available."""
+    owner = Owner(name="Alex")
+    pet = Pet(name="Biscuit", species="Dog")
+    owner.add_pet(pet)
+
+    pet.add_task(Task(description="Walk", duration_minutes=60,
+                       priority="high", time="08:00"))
+    pet.add_task(Task(description="Vet visit", duration_minutes=60,
+                       priority="high", time="10:00"))
+
+    scheduler = Scheduler(owner, available_minutes=90)
+    plan = scheduler.generate_plan()
+
+    total_minutes = sum(t.duration_minutes for t in plan)
+    assert total_minutes <= 90
+
+
+def test_filter_tasks_by_completion_status():
+    """filter_tasks() should correctly separate complete and incomplete tasks."""
+    owner = Owner(name="Alex")
+    pet = Pet(name="Biscuit", species="Dog")
+    owner.add_pet(pet)
+
+    done_task = Task(description="Feeding", duration_minutes=10,
+                      priority="high", time="08:00")
+    done_task.mark_complete()
+    pending_task = Task(description="Walk", duration_minutes=30,
+                         priority="high", time="09:00")
+
+    pet.add_task(done_task)
+    pet.add_task(pending_task)
+
+    scheduler = Scheduler(owner)
+    incomplete = scheduler.filter_tasks(completed=False)
+
+    assert len(incomplete) == 1
+    assert incomplete[0].description == "Walk"
