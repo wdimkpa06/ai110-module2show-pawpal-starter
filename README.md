@@ -82,6 +82,19 @@ Conflict Check
 --------------
   WARNING: Conflict at 08:00: 'Morning walk' (Biscuit) overlaps with 'Feeding' (Whiskers)
 
+Recurrence Check
+----------------
+Marking 'Morning walk' complete...
+  Created next occurrence: 'Morning walk' due 2026-07-08 at 08:00
+
+Biscuit's tasks after completion
+--------------------------------
+  08:00 | Biscuit    | Morning walk         |  30 min | high   | done
+  18:00 | Biscuit    | Evening walk         |  30 min | medium | pending
+  10:00 | Biscuit    | Vet checkup          |  45 min | high   | pending
+  08:00 | Biscuit    | Morning walk         |  30 min | high   | pending
+
+
 ## 🧪 Testing PawPal+
 
 ```bash
@@ -111,12 +124,14 @@ tests\test_pawpal.py .....                                                      
 
 > Fill in once you've implemented scheduling logic.
 
+## 📐 Smarter Scheduling
+
 | Feature | Method(s) | Notes |
 |---------|-----------|-------|
-| Task sorting | | e.g., by priority, duration |
-| Filtering | | e.g., skip tasks if time runs out |
-| Conflict handling | | e.g., overlapping time slots |
-| Recurring tasks | | e.g., daily vs. weekly |
+| Task sorting | `Scheduler.sort_by_time()`, `Scheduler.sort_by_priority()` | Sorts all tasks chronologically or by priority (high → medium → low) |
+| Filtering | `Scheduler.filter_tasks(pet_name, completed)` | Filters tasks by pet name and/or completion status, combinable |
+| Conflict handling | `Scheduler.detect_conflicts()` | Flags tasks scheduled at the exact same time, even across different pets |
+| Recurring tasks | `Scheduler.complete_task()`, `Scheduler.advance_recurring_task()` | Marking a daily/weekly task complete auto-creates its next occurrence using `timedelta` |
 
 ## 📸 Demo Walkthrough
 

@@ -76,6 +76,17 @@ def main():
     else:
         print("  No conflicts found.")
 
+    print("\nRecurrence Check")
+    print("-" * 16)
+    daily_task = biscuit.get_tasks()[0]  # "Morning walk", a daily task
+    print(f"Marking '{daily_task.description}' complete...")
+    next_occurrence = scheduler.complete_task(daily_task)
+    if next_occurrence:
+        print(
+            f"  Created next occurrence: '{next_occurrence.description}' "
+            f"due {next_occurrence.due_date} at {next_occurrence.time}"
+        )
+    print_task_list("Biscuit's tasks after completion", biscuit.get_tasks())
 
 if __name__ == "__main__":
     main()

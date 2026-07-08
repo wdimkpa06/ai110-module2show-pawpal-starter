@@ -25,11 +25,15 @@ After an AI review of my initial skeleton, I added a time field and a pet_name f
 - What constraints does your scheduler consider (for example: time, priority, preferences)?
 - How did you decide which constraints mattered most?
 
+The scheduler considers task duration, priority level, and available time budget when building a plan. It also considers scheduled time when detecting conflicts. Priority mattered most to me because a pet owner with limited time should never miss a high-priority task (like medication) in favor of a low-priority one (like grooming), even if the low-priority task fits more neatly into the schedule.
+
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
 - Why is that tradeoff reasonable for this scenario?
 
+My scheduler uses a greedy algorithm: it sorts tasks by priority, then adds them to the plan in that order until the time budget runs out. This means a lower-priority task could be skipped even if it would technically fit alongside a slightly different combination of higher-priority tasks (a true optimal-fit solution would require something closer to a knapsack algorithm). I chose the greedy approach because it's simpler to implement, easier to explain to a user via explain_plan(), and prioritizing strictly by importance matches how a real pet owner would think about their day, rather than optimizing purely for "most tasks completed."
+My conflict detection also only checks for exact time matches rather than overlapping duration ranges — two tasks at 08:00 and 08:15 with 30-minute durations would actually overlap in real life but wouldn't be flagged. I accepted this simplification for now since it covers the most obvious case (double-booking the same time slot) without the added complexity of interval overlap logic.
 ---
 
 ## 3. AI Collaboration

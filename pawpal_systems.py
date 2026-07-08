@@ -5,6 +5,7 @@ Contains the data models and scheduling logic for the pet care app.
 
 from dataclasses import dataclass, field
 from typing import List, Optional
+from datetime import date, timedelta
 
 
 PRIORITY_ORDER = {"high": 0, "medium": 1, "low": 2}
@@ -20,6 +21,7 @@ class Task:
     pet_name: str = ""  # which pet this task belongs to (set when added to a Pet)
     frequency: str = "once"  # "once", "daily", "weekly"
     is_complete: bool = False
+    due_date: str = ""  # ISO date "YYYY-MM-DD", set for recurring tasks
 
     def mark_complete(self) -> None:
         """Mark this task as completed."""
@@ -159,11 +161,14 @@ class Scheduler:
     def advance_recurring_task(self, task: Task) -> Optional[Task]:
         """
         If a completed task is daily or weekly, create and return
-        a new Task instance for its next occurrence. Returns None
-        for one-time tasks.
+        a new Task instance for its next occurrence, with due_date
+        calculated using timedelta. Returns None for one-time tasks.
         """
         if task.frequency not in ("daily", "weekly"):
             return None
+
+        days_ahead = 1 if task.frequency == "daily" else 7
+        next_due_date = date.today() + timedelta(days=days_ahead)
 
         next_task = Task(
             description=task.description,
@@ -173,5 +178,23 @@ class Scheduler:
             pet_name=task.pet_name,
             frequency=task.frequency,
             is_complete=False,
+            due_date=next_due_date.isoformat(),
         )
+        return next_task
+
+    def complete_task(self, task: Task) -> Optional[Task]:
+        """
+        Mark a task complete and, if it's recurring, automatically
+        create and attach its next occurrence to the correct pet.
+        Returns the newly created task, or None for one-time tasks.
+        """
+        task.mark_complete()
+        next_task = self.advance_recurring_task(task)
+
+        if next_task:
+            for pet in self.owner.get_all_pets():
+                if pet.name == task.pet_name:
+                    pet.add_task(next_task)
+                    break
+
         return next_task
