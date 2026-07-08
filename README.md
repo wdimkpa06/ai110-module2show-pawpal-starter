@@ -98,12 +98,16 @@ Biscuit's tasks after completion
 ## 🧪 Testing PawPal+
 
 ```bash
-# Run the full test suite:
-pytest
-
-# Run with coverage:
-pytest --cov
+python -m pytest
 ```
+
+This suite covers task completion, task addition, sorting by time, conflict detection,
+recurring task creation, one-time tasks not recurring, time-budget enforcement in plan
+generation, filtering by completion status, and a pet with no tasks (edge case).
+
+**Confidence Level:** (4/5 stars) — core behaviors are well covered, but I haven't
+tested overlapping-duration conflicts (only exact time matches) or weekly recurrence
+specifically, since my tests focus on daily recurrence.
 
 Sample test output:
 
@@ -137,10 +141,29 @@ tests\test_pawpal.py .........                                                  
 
 Describe your app in numbered steps so a reader can follow along without watching a video:
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+1. Enter an owner name, pet name, and species, then click "Set up owner and pet." This creates the Owner and Pet objects and stores them in Streamlit's session state so they persist across interactions.
+2. Add care tasks using the form: a title, duration, priority, time (HH:MM), and frequency (once/daily/weekly). Each task is added directly to the Pet object via `Pet.add_task()`.
+3. Added tasks appear immediately in a table below the form, showing time, duration, priority, frequency, and completion status.
+4. Adjust the "Available time today" slider to set how many minutes the Scheduler has to work with.
+5. Click "Generate schedule." This calls `Scheduler.generate_plan()`, which greedily selects tasks by priority until the time budget is used up, `Scheduler.explain_plan()`, which describes why each task was included or skipped, and `Scheduler.detect_conflicts()`, which flags any tasks scheduled at the same time.
+6. Results are displayed as: a table of the day's plan, a plain-language explanation, and either a success message (no conflicts) or warning messages (one per conflict found).
+
+Key Scheduler behaviors demonstrated: priority-based plan generation within a time budget, human-readable plan explanations, and same-time conflict detection across pets.
+
+All tasks (sorted by time)
+--------------------------
+  08:00 | Biscuit    | Morning walk         |  30 min | high   | pending
+  08:00 | Whiskers   | Feeding              |  10 min | high   | pending
+  10:00 | Biscuit    | Vet checkup          |  45 min | high   | pending
+  12:00 | Whiskers   | Litter box cleaning  |  10 min | low    | pending
+  18:00 | Biscuit    | Evening walk         |  30 min | medium | pending
+
+All tasks (sorted by priority)
+------------------------------
+  08:00 | Biscuit    | Morning walk         |  30 min | high   | pending
+  10:00 | Biscuit    | Vet checkup          |  45 min | high   | pending
+  08:00 | Whiskers   | Feeding              |  10 min | high   | pending
+  18:00 | Biscuit    | Evening walk         |  30 min | medium | pending
+  12:00 | Whiskers   | Litter box cleaning  |  10 min | low    | pending
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->

@@ -18,8 +18,11 @@ classDiagram
         +str description
         +int duration_minutes
         +str priority
+        +str time
+        +str pet_name
         +str frequency
         +bool is_complete
+        +str due_date
         +mark_complete() None
     }
 
@@ -28,9 +31,13 @@ classDiagram
         +int available_minutes
         +get_all_tasks() list~Task~
         +sort_by_priority() list~Task~
+        +sort_by_time() list~Task~
+        +filter_tasks(pet_name, completed) list~Task~
         +generate_plan() list~Task~
         +explain_plan() str
         +detect_conflicts() list~str~
+        +advance_recurring_task(task: Task) Task
+        +complete_task(task: Task) Task
     }
 
     Owner "1" --> "many" Pet : has
